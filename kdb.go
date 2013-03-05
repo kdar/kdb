@@ -4,6 +4,8 @@ import (
   "database/sql"
   "fmt"
   "github.com/kdar/kmap"
+  // "github.com/kisielk/sqlstruct"
+  // "reflect"
   "strings"
 )
 
@@ -63,6 +65,48 @@ func QueryMaps(db *sql.DB, query string, args ...interface{}) ([]kmap.Map, error
 
   return nil, err
 }
+
+// func QueryStruct(db *sql.DB, query string, strct interface{}, args ...interface{}) error {
+//   rows, err := db.Query(query, args...)
+//   if err != nil {
+//     return err
+//   }
+
+//   if rows.Next() {
+//     err = sqlstruct.Scan(strct, rows)
+//     if err != nil {
+//       return err
+//     }
+//   }
+
+//   return nil
+// }
+
+// // use it like:
+// // var accounts []*Account
+// // var account Account
+// // QueryStructs(db, "select * from Accounts", &accounts, &account)
+// func QueryStructs(db *sql.DB, query string, strcts interface{}, strct interface{}, args ...interface{}) error {
+//   rows, err := db.Query(query, args...)
+//   if err != nil {
+//     return err
+//   }
+
+//   vof := reflect.ValueOf(strcts)
+//   //into := reflect.New(vof.Type().Elem().Elem())
+
+//   for rows.Next() {
+//     err := sqlstruct.Scan(strct, rows)
+//     if err != nil {
+//       fmt.Println(err)
+//       return err
+//     }
+
+//     vof.Elem().Set(reflect.Append(vof.Elem(), reflect.ValueOf(strct)))
+//   }
+
+//   return nil
+// }
 
 func Fields(names []string) string {
   for i, _ := range names {
