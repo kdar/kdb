@@ -1,6 +1,6 @@
 // Contains casts to help in converting from pointers
 // to non-pointers.
-package helper
+package kdb
 
 func String(v *string) string {
   if v != nil {
