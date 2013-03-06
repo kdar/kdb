@@ -128,6 +128,6 @@ func InsertMap(db *sql.DB, table string, m kmap.Map) (sql.Result, error) {
 
   fieldsSql := Fields(fields)
 
-  res, err := db.Exec(fmt.Sprintf("INSERT INTO Messages %s VALUES (%s)", fieldsSql, strings.Join(variables, ",")), values...)
+  res, err := db.Exec(fmt.Sprintf("INSERT INTO %s %s VALUES (%s)", table, fieldsSql, strings.Join(variables, ",")), values...)
   return res, err
 }
