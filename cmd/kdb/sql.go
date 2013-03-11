@@ -53,14 +53,14 @@ func mysql(md *Metadata, db *sql.DB) error {
       // default type
       vtype := reflect.TypeOf("")
 
-      typ, sign := parseMysqlType(mtyp)
+      typ, _ := parseMysqlType(mtyp)
       switch typ {
       case "tinyint", "smallint", "mediumint", "int", "bigint":
-        if sign == "unsigned" {
-          vtype = reflect.TypeOf(uint64(0))
-        } else {
-          vtype = reflect.TypeOf(int64(0))
-        }
+        // if sign == "unsigned" {
+        //   vtype = reflect.TypeOf(uint64(0))
+        // } else {
+        vtype = reflect.TypeOf(int64(0))
+        // }
       case "decimal", "float", "double":
         vtype = reflect.TypeOf(float64(0))
       case "blob", "tinyblog", "mediumblob", "longblob":
@@ -130,14 +130,14 @@ func sqlite3(md *Metadata, db *sql.DB) error {
       // default type
       vtype := reflect.TypeOf("")
 
-      typ, sign := parseSqlite3Type(strings.ToLower(styp))
+      typ, _ := parseSqlite3Type(strings.ToLower(styp))
       switch typ {
       case "int", "integer", "tinyint", "smallint", "mediumint", "bigint", "unsigned big int", "big int", "int2", "int8":
-        if sign == "unsigned" {
-          vtype = reflect.TypeOf(uint64(0))
-        } else {
-          vtype = reflect.TypeOf(int64(0))
-        }
+        // if sign == "unsigned" {
+        //   vtype = reflect.TypeOf(uint64(0))
+        // } else {
+        vtype = reflect.TypeOf(int64(0))
+        // }
       case "real", "double", "double precision", "float", "numeric", "decimal", "date", "datetime":
         vtype = reflect.TypeOf(float64(0))
       case "bit", "boolean", "bool":

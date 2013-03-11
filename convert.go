@@ -218,3 +218,36 @@ func ScanStructIntoMap(obj interface{}) (map[string]interface{}, error) {
 
   return mapped, nil
 }
+
+func String(v *string) string {
+  if v != nil {
+    return *v
+  }
+  return ""
+}
+
+func Int64(v *int64) int64 {
+  if v != nil {
+    return *v
+  }
+  return int64(0)
+}
+
+func Float64(v *float64) float64 {
+  if v != nil {
+    return *v
+  }
+  return float64(0)
+}
+
+func Stringp(v string) *string {
+  return &v
+}
+
+func Int64p(v int64) *int64 {
+  return &v
+}
+
+func Float64p(v float64) *float64 {
+  return &v
+}

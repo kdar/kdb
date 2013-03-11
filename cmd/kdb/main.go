@@ -51,9 +51,10 @@ Options:
 \t-sqlstruct         \toutput structs that work with sqlstruct 
 \t                   \t(github.com/kisielk/sqlstruct)
 \t-omitgen           \tomit the generated comment at the top
-\t-pointers          \tmake every struct field a pointer. this
-\t                   \thelps in supporting <nil>
 \t-package <name>    \twhat the generated package should be
+\t-types             \twhat the struct field types should be.
+\t                   \tvalues: base, null, pointer
+\t                   \tdefault: base
 
 Available formats are the following:
 
@@ -88,7 +89,7 @@ var (
   output           = flag.String("output", "", "")
   sqlstruct        = flag.Bool("sqlstruct", false, "")
   omitgen          = flag.Bool("omitgen", false, "")
-  pointers         = flag.Bool("pointers", false, "")
+  types            = flag.String("types", "base", "")
   packge           = flag.String("package", "model", "")
 )
 

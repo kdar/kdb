@@ -3,7 +3,6 @@ package kdb
 import (
   "database/sql"
   "fmt"
-  "github.com/kdar/kmap"
   // "github.com/kisielk/sqlstruct"
   // "reflect"
   "reflect"
@@ -14,8 +13,8 @@ type Arger interface {
   Args() []interface{}
 }
 
-func GetMaps(rows *sql.Rows) ([]kmap.Map, error) {
-  var maps []kmap.Map
+func GetMaps(rows *sql.Rows) ([]map[string]interface{}, error) {
+  var maps []map[string]interface{}
 
   cols, err := rows.Columns()
   if err != nil {
@@ -30,7 +29,7 @@ func GetMaps(rows *sql.Rows) ([]kmap.Map, error) {
   }
 
   for rows.Next() {
-    m := kmap.Make()
+    m := make(map[string]interface{})
     err := rows.Scan(scanArgs...)
     if err == nil {
       for n, c := range cols {
@@ -43,7 +42,7 @@ func GetMaps(rows *sql.Rows) ([]kmap.Map, error) {
   return maps, nil
 }
 
-func QueryMap(db *sql.DB, query string, args ...interface{}) (kmap.Map, error) {
+func QueryMap(db *sql.DB, query string, args ...interface{}) (map[string]interface{}, error) {
   rows, err := db.Query(query, args...)
   if err != nil {
     return nil, err
@@ -57,7 +56,7 @@ func QueryMap(db *sql.DB, query string, args ...interface{}) (kmap.Map, error) {
   return nil, err
 }
 
-func QueryMaps(db *sql.DB, query string, args ...interface{}) ([]kmap.Map, error) {
+func QueryMaps(db *sql.DB, query string, args ...interface{}) ([]map[string]interface{}, error) {
   rows, err := db.Query(query, args...)
   if err != nil {
     return nil, err
@@ -74,8 +73,8 @@ func QueryMaps(db *sql.DB, query string, args ...interface{}) ([]kmap.Map, error
 // Querys the database for one row, and sets the data in arger.
 // Usage:
 //  var account Accounts // implements Arger
-//  found, err := Query(db, `select * from Accounts where username = ?`, &account, "kevin")
-func Query(db *sql.DB, query string, arger Arger, args ...interface{}) (found bool, err error) {
+//  found, err := QueryArger(db, `select * from Accounts where username = ?`, &account, "kevin")
+func QueryArger(db *sql.DB, query string, arger Arger, args ...interface{}) (found bool, err error) {
   rows, err := db.Query(query, args...)
   if err != nil {
     return false, err
@@ -96,8 +95,8 @@ func Query(db *sql.DB, query string, arger Arger, args ...interface{}) (found bo
 // the returned rows.
 // Usage:
 //  var strcts []Accounts // Each Accounts implements Arger
-//  err := helper.QueryAll(db, `select * from Accounts`, &strcts, reflect.TypeOf(Accounts{}))
-func QueryAll(db *sql.DB, query string, strcts interface{}, typ reflect.Type, args ...interface{}) error {
+//  err := helper.QueryArgers(db, `select * from Accounts`, &strcts, reflect.TypeOf(Accounts{}))
+func QueryArgers(db *sql.DB, query string, strcts interface{}, typ reflect.Type, args ...interface{}) error {
   rows, err := db.Query(query, args...)
   if err != nil {
     return err
@@ -167,7 +166,7 @@ func Fields(names []string) string {
   return `("` + strings.Join(names, `", "`) + `")`
 }
 
-func InsertMap(db *sql.DB, table string, m kmap.Map) (sql.Result, error) {
+func InsertMap(db *sql.DB, table string, m map[string]interface{}) (sql.Result, error) {
   var fields []string
   var values []interface{}
   var variables []string
